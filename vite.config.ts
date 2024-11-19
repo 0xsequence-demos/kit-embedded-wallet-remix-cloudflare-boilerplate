@@ -4,6 +4,7 @@ import {
 } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+
 declare module "@remix-run/cloudflare" {
   interface Future {
     v3_singleFetch: true;
@@ -27,5 +28,15 @@ export default defineConfig({
   // Add noExternal to allow kit to be bundled
   ssr: {
     noExternal: ["@0xsequence/kit"],
+  },
+  resolve: {
+    alias: {
+      fs: "node:fs",
+      buffer: "buffer/",
+      stream: "node:stream",
+      http: "node:http",
+      https: "node:https",
+      "fs/promises": "node:fs/promises",
+    },
   },
 });
