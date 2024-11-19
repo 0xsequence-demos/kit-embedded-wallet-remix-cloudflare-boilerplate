@@ -37,6 +37,13 @@ export default defineConfig({
       http: "node:http",
       https: "node:https",
       "fs/promises": "node:fs/promises",
+      zlib: "node:zlib",
+      crypto: "crypto",
+      "node:crypto": "crypto",
+      events: "events",
+      "node:events": "events",
+      net: "node:net",
+      tls: "node:tls",
     },
   },
 });
