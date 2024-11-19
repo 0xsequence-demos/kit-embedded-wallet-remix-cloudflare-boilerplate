@@ -44,7 +44,7 @@ export default defineConfig({
       zlib: "node:zlib",
       os: "node:os",
       path: "node:path",
-      processs: "node:process",
+      process: "node:process",
       net: "node:net",
       tls: "node:tls",
       child_process: "node:child_process",
