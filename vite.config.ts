@@ -4,7 +4,7 @@ import {
 } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 declare module "@remix-run/cloudflare" {
   interface Future {
     v3_singleFetch: true;
@@ -13,6 +13,10 @@ declare module "@remix-run/cloudflare" {
 
 export default defineConfig({
   plugins: [
+    nodePolyfills({
+      // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
+      include: ["crypto", "events", "util", "stream", "vm"],
+    }),
     remixCloudflareDevProxy(),
     remix({
       future: {
@@ -38,12 +42,17 @@ export default defineConfig({
       https: "node:https",
       "fs/promises": "node:fs/promises",
       zlib: "node:zlib",
-      crypto: "crypto",
-      "node:crypto": "crypto",
-      events: "events",
-      "node:events": "events",
+
       net: "node:net",
       tls: "node:tls",
+      child_process: "node:child_process",
+      url: "node:url",
+      crypto: "crypto",
+      events: "events",
+      util: "util",
+      "node:crypto": "crypto",
+      "node:events": "events",
+      "node:util": "util",
     },
   },
 });
