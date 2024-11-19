@@ -42,7 +42,9 @@ export default defineConfig({
       https: "node:https",
       "fs/promises": "node:fs/promises",
       zlib: "node:zlib",
-
+      os: "node:os",
+      path: "node:path",
+      processs: "node:process",
       net: "node:net",
       tls: "node:tls",
       child_process: "node:child_process",
