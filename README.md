@@ -1,50 +1,24 @@
-# Welcome to Remix + Cloudflare!
+# Sequence Kit Embedded Wallet Remix Cloudflare Starter Boilerplate
 
-- 📖 [Remix docs](https://remix.run/docs)
-- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+Starter Sequence Embedded Wallet boilerplate that uses [Sequence Kit](https://github.com/0xsequence/kit) with Remix & Cloudflare.
 
-## Development
+## Quickstart
 
-Run the dev server:
+Copy `.dev.vars.example` to `.dev.vars` and fill with your project information. To test things out, you can use the pre-provided keys in the `.dev.vars.example` file:
 
-```sh
-npm run dev
+```js
+cp .dev.vars.example .dev.vars
 ```
 
-To run Wrangler:
+Then install and run:
 
-```sh
-npm run build
-npm run start
+```js
+npm install && npm run dev
 ```
-
-## Typegen
-
-Generate types for your Cloudflare bindings in `wrangler.toml`:
-
-```sh
-npm run typegen
-```
-
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then, deploy your app to Cloudflare Pages:
-
-```sh
-npm run deploy
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
 
 > [!WARNING]
-> In our experience, we recommend avoiding pnpm on remix projects on cloudflare, until further notice.
+> This project is using `npm` for the package manager. In our experience, we recommend avoiding pnpm on remix projects on cloudflare, until further notice.
+
+The app will start on `localhost:4444`
+
+To provide your own keys from [Sequence Builder](https://sequence.build/), simply edit the `.dev.vars` file accordingly.
