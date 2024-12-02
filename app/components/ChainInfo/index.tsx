@@ -18,7 +18,7 @@ const ChainInfo = (props: { chain: Chain; address: Address }) => {
         <ActiveChain chain={chain} />
         <ChainSwitcher chain={chain} />
       </Box>
-      <NativeBalance chain={chain} address={address} />
+      {/* <NativeBalance chain={chain} address={address} /> */}
     </Box>
   );
 };

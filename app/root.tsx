@@ -10,10 +10,11 @@ import {
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { createConfig, SequenceKit } from "@0xsequence/kit";
 
+import boilerplateStyle from "boilerplate-design-system/styles.css?url";
+
 // Styles
 import styles from "@0xsequence/design-system/styles.css?url";
 import indexCss from "./index.css?url";
-import { GithubCorner } from "~/components/GithubCorner";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,6 +27,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: boilerplateStyle },
   { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: indexCss },
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
@@ -69,6 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -101,7 +104,6 @@ export default function App() {
   return (
     <SequenceKit config={config}>
       <div id="root">
-        <GithubCorner to="https://github.com/0xsequence-demos/kit-embedded-wallet-remix-cloudflare-boilerplate" />
         <Outlet />
       </div>
     </SequenceKit>

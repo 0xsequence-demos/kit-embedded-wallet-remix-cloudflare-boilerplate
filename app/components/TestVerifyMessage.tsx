@@ -1,124 +1,99 @@
-import {
-  Box,
-  Card,
-  Collapsible,
-  Spinner,
-  Text,
-  TextInput,
-} from "@0xsequence/design-system";
-import { ChangeEvent, useState } from "react";
-import { Address, Signature } from "viem";
+import { Box, Card, Spinner, Text } from "@0xsequence/design-system";
+import { Action, Button, Field, Input, Label } from "boilerplate-design-system";
+import { useState } from "react";
+import { Signature } from "viem";
 import { usePublicClient } from "wagmi";
 
 const TestVerifyMessage = (props: { chainId: number }) => {
   const { chainId } = props;
-  const [message, setMessage] = useState<string>();
-  const [address, setAddress] = useState<Address>();
-  const [signature, setSignature] = useState<Signature>();
   const publicClient = usePublicClient({ chainId });
-  const [isValidSignature, setIsValidSignature] = useState<boolean>(false);
-  const [validatedSignature, setValidatedSignature] = useState<boolean>(false);
-  const [validatingSignature, setValidatingSignature] =
-    useState<boolean>(false);
 
-  const onChangeMessage = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setMessage(value);
-  };
+  const [isValidSignature, setIsValidSignature] = useState<
+    boolean | "idle" | "pending"
+  >("idle");
 
-  const onChangeAddress = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setAddress(value as Address);
-  };
+  function handleVerifyMessageIntent(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  const onChangeSignature = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSignature(value as unknown as Signature);
-  };
+    // abstract all this logic
 
-  const verifyMessage = async () => {
+    /** Get the data from the form fields */
+    const formdata = new FormData(event.currentTarget);
+
+    /** Get the value for the relevant fields */
+    const address = formdata.get("address") as `0x${string}`;
+    const message = formdata.get("message") as string;
+    const signature = formdata.get("signature") as
+      | `0x${string}`
+      | Uint8Array
+      | Signature;
+
+    /** Stop if a value is missing */
     if (!(address && message && signature)) return;
+
+    /** Verify the message */
     try {
-      setValidatingSignature(true);
-      setValidatedSignature(false);
-      const result = await publicClient!.verifyMessage({
-        address,
-        message,
-        signature,
-      });
-      setValidatedSignature(true);
-      setIsValidSignature(result);
-      setValidatingSignature(false);
+      // setValidatingSignature(true);
+      setIsValidSignature("pending");
+      publicClient!
+        .verifyMessage({
+          address,
+          message,
+          signature,
+        })
+        .then((isValid) => {
+          setIsValidSignature(isValid);
+        });
     } catch (error) {
       console.error(error);
-      setIsValidSignature(false);
-      setValidatingSignature(false);
+      setIsValidSignature("idle");
     }
-  };
+  }
 
   return (
     <>
-      <Collapsible
-        label="Verify signature"
-        display="flex"
-        flexDirection="column"
-        gap="8"
-      >
-        <Box display="flex" flexDirection="column" gap="8" marginBottom="8">
-          <TextInput
-            name="Address"
-            controls="Address"
-            numeric={false}
-            onChange={onChangeAddress}
-          />
-          <TextInput
-            name="Message"
-            controls="Message"
-            numeric={false}
-            onChange={onChangeMessage}
-          />
-          <TextInput
-            name="Signature"
-            controls="Signature"
-            numeric={false}
-            onChange={onChangeSignature}
-          />
-          <button
-            onClick={verifyMessage}
-            type="button"
-            disabled={validatingSignature}
-            className="margin-left-auto"
+      <Action intent="verify_message" onSubmit={handleVerifyMessageIntent}>
+        <Field name="address">
+          <Label>Address</Label>
+          <Input />
+        </Field>
+
+        <Field name="message">
+          <Label>Message</Label>
+          <Input />
+        </Field>
+
+        <Field name="signature">
+          <Label>Signature</Label>
+          <Input />
+        </Field>
+
+        <Button type="submit" variant="primary" subvariants={{ flex: "start" }}>
+          Verify
+        </Button>
+      </Action>
+
+      <Card>
+        {isValidSignature === "idle" ? (
+          <span>Nothing verified yet</span>
+        ) : isValidSignature === "pending" ? (
+          <span>
+            <Spinner size="sm" />
+            Checking...
+          </span>
+        ) : (
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8"
+            style={{ maxWidth: "700px" }}
           >
-            Verify
-          </button>
-        </Box>
-        <Card>
-          {validatedSignature ? (
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap="8"
-              style={{ maxWidth: "700px" }}
-            >
-              <Text className="break-word">
-                Signature is: {isValidSignature ? "Valid" : "Invalid"}
-              </Text>
-            </Box>
-          ) : (
-            <Box>
-              <Text>Nothing verified yet</Text>
-            </Box>
-          )}
-          {validatingSignature && (
-            <Box gap="2" alignItems="center" marginTop="4">
-              <Spinner size="sm" />
-              <Text variant="small" color="text50">
-                Pending...
-              </Text>
-            </Box>
-          )}
-        </Card>
-      </Collapsible>
+            <Text className="break-word">
+              Signature is: {isValidSignature ? "Valid" : "Invalid"}
+            </Text>
+          </Box>
+        )}
+      </Card>
     </>
   );
 };

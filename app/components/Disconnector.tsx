@@ -1,10 +1,11 @@
+import { Button } from "boilerplate-design-system";
 import { useDisconnect } from "wagmi";
 
 const Disconnector = () => {
   const { disconnect } = useDisconnect();
   return (
     <div className="card">
-      <button onClick={() => disconnect()}>Disconnect</button>
+      <Button onClick={() => disconnect()}>Disconnect</Button>
     </div>
   );
 };
