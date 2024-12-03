@@ -1,5 +1,5 @@
 import { Box, Card, Spinner, Text } from "@0xsequence/design-system";
-import { Action, Button, Field, Input, Label } from "boilerplate-design-system";
+import { Form, Button, Field, Input, Label } from "boilerplate-design-system";
 import { useState } from "react";
 import { Signature } from "viem";
 import { usePublicClient } from "wagmi";
@@ -12,21 +12,20 @@ const TestVerifyMessage = (props: { chainId: number }) => {
     boolean | "idle" | "pending"
   >("idle");
 
-  function handleVerifyMessageIntent(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function handleVerifyMessage(event: React.FormEvent<HTMLFormElement>, data) {
+    const { address, message, signature } = data;
 
     // abstract all this logic
 
     /** Get the data from the form fields */
-    const formdata = new FormData(event.currentTarget);
 
     /** Get the value for the relevant fields */
-    const address = formdata.get("address") as `0x${string}`;
-    const message = formdata.get("message") as string;
-    const signature = formdata.get("signature") as
-      | `0x${string}`
-      | Uint8Array
-      | Signature;
+    // const address = formdata.get("address") as `0x${string}`;
+    // const message = formdata.get("message") as string;
+    // const signature = formdata.get("signature") as
+    //   | `0x${string}`
+    //   | Uint8Array
+    //   | Signature;
 
     /** Stop if a value is missing */
     if (!(address && message && signature)) return;
@@ -52,7 +51,7 @@ const TestVerifyMessage = (props: { chainId: number }) => {
 
   return (
     <>
-      <Action intent="verify_message" onSubmit={handleVerifyMessageIntent}>
+      <Form onAction={handleVerifyMessage}>
         <Field name="address">
           <Label>Address</Label>
           <Input />
@@ -71,7 +70,7 @@ const TestVerifyMessage = (props: { chainId: number }) => {
         <Button type="submit" variant="primary" subvariants={{ flex: "start" }}>
           Verify
         </Button>
-      </Action>
+      </Form>
 
       <Card>
         {isValidSignature === "idle" ? (

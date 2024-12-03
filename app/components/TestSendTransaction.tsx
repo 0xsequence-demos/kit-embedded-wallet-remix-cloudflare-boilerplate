@@ -5,6 +5,7 @@ import { useSendTransaction, useWalletClient } from "wagmi";
 import chains from "~/constants";
 import CardButton from "./CardButton";
 import ErrorToast from "./ErrorToast";
+import { Card, Form } from "boilerplate-design-system";
 
 const TestSendTransaction = (props: { chainId: number }) => {
   const { data: walletClient } = useWalletClient();
@@ -33,36 +34,41 @@ const TestSendTransaction = (props: { chainId: number }) => {
     }
   }, [chainId]);
 
-  const runSendTransaction = async () => {
+  const handleSendTransaction = async () => {
     const [account] = await walletClient!.getAddresses();
     sendTransaction({ to: account, value: BigInt(0), gas: null });
   };
 
   return (
     <>
-      <CardButton
+      <Form onAction={handleSendTransaction}>
+        <button type="submit">send transaction</button>
+      </Form>
+      {/* <CardButton
         title="Send transaction"
         description="Send a transaction with your wallet"
         isPending={isPendingSendTxn}
         onClick={runSendTransaction}
-      />
+      /> */}
       {lastTransaction && (
-        <Box display="flex" flexDirection="column" gap="4">
-          <Text>Last transaction hash: {lastTransaction}</Text>
-          <button>
-            <a
-              target="_blank"
-              href={`${network?.blockExplorers?.default?.url}/tx/${lastTransaction}`}
-              rel="noreferrer"
-            >
-              Click to view on {network?.name}
-            </a>
-          </button>
-        </Box>
+        <Card>
+          <span>Last transaction hash: {lastTransaction}</span>
+
+          <a
+            href={`${network?.blockExplorers?.default?.url}/tx/${lastTransaction}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Click to view on {network?.name}
+          </a>
+        </Card>
       )}
-      {error && (
-        <ErrorToast message={error?.message} onClose={reset} duration={7000} />
-      )}
+      {error &&
+        alert(
+          error.message
+        )
+        // <ErrorToast message={error?.message} onClose={reset} duration={7000} />
+      }
     </>
   );
 };

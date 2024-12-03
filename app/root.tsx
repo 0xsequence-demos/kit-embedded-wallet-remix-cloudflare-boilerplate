@@ -13,7 +13,7 @@ import { createConfig, SequenceKit } from "@0xsequence/kit";
 import boilerplateStyle from "boilerplate-design-system/styles.css?url";
 
 // Styles
-import styles from "@0xsequence/design-system/styles.css?url";
+// import styles from "@0xsequence/design-system/styles.css?url";
 import indexCss from "./index.css?url";
 
 export const meta: MetaFunction = () => {
@@ -28,7 +28,7 @@ export const meta: MetaFunction = () => {
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: boilerplateStyle },
-  { rel: "stylesheet", href: styles },
+  // { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: indexCss },
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

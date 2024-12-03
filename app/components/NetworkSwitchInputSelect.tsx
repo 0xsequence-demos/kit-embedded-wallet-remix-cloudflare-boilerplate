@@ -1,4 +1,4 @@
-import { Select } from "boilerplate-design-system";
+import { InputSelect } from "boilerplate-design-system";
 import { useSwitchChain } from "wagmi";
 
 const SEQUENCE_ASSETS_URL_PREFIX = "https://assets.sequence.info/";
@@ -13,7 +13,7 @@ export const networkImageUrl = (
   );
 };
 
-export function ChainSwitchSelect({ chainId }: { chainId: string }) {
+export function NetworkSwitchInputSelect({ chainId }: { chainId: string }) {
   const { chains, switchChainAsync } = useSwitchChain();
 
   function handleChainChange(value: string) {
@@ -25,14 +25,15 @@ export function ChainSwitchSelect({ chainId }: { chainId: string }) {
   }
 
   return (
-    <Select defaultValue={chainId} onValueChange={handleChainChange}>
-      <Select.Options
-        items={chains?.map((chain) => ({
-          icon: networkImageUrl(chain.id, "small"),
-          label: chain.name,
-          value: chain.id.toString(),
-        }))}
-      />
-    </Select>
+    <InputSelect
+      name="network"
+      defaultValue={chainId}
+      onValueChange={handleChainChange}
+      options={chains?.map((chain) => ({
+        icon: networkImageUrl(chain.id, "small"),
+        label: chain.name,
+        value: chain.id.toString(),
+      }))}
+    />
   );
 }

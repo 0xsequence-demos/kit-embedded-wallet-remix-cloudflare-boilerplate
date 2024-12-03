@@ -1,24 +1,21 @@
-import { useEffect, useState, FormEvent } from "react";
-import {
-  Card,
-  Action,
-  Field,
-  Label,
-  Input,
-  Button,
-} from "boilerplate-design-system";
+import { Form, Button, InputText, Card } from "boilerplate-design-system";
 import { useSignMessage } from "wagmi";
+import { FormHandler } from "node_modules/boilerplate-design-system/dist/components/action/Form";
+import { SignableMessage } from "viem";
+
 const TestSignMessage = () => {
   const { isPending, data, signMessage: signMessageHook } = useSignMessage();
   // const [textCopied, setTextCopied] = useState<boolean>(false);
 
-  function handleSignMessageIntent(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const message = data.get("message") as string;
+  const handleSignMessage: FormHandler = (event, data) => {
+    const { message } = data as { message: SignableMessage };
     if (!message) return;
     signMessageHook({ message });
-  }
+
+    return [data, true];
+  };
+
+  // useAsyncStoreData("messageSignature", data);
 
   // const copySignature = () => {
   //   if (!data) return;
@@ -35,11 +32,8 @@ const TestSignMessage = () => {
 
   return (
     <>
-      <Action intent="sign_message" onSubmit={handleSignMessageIntent}>
-        <Field name="message">
-          <Label>Message</Label>
-          <Input subvariants={{ width: "full" }} />
-        </Field>
+      <Form onAction={handleSignMessage}>
+        <InputText name="message" />
 
         <Button
           type="submit"
@@ -49,9 +43,11 @@ const TestSignMessage = () => {
         >
           Sign
         </Button>
-      </Action>
+      </Form>
 
-      {data ? <div className="break-words">{data}</div> : "Nothing signed yet"}
+      <Card className="break-word">
+        {data ? <>{data}</> : "Nothing signed yet"}
+      </Card>
     </>
   );
 };
