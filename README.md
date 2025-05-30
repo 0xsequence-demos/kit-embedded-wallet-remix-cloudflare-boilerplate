@@ -2,7 +2,7 @@
 
 > [!WARNING]  
 > This repo is deprecated as part of the evolution of Remix to React Router 7.
-> Please check out [this boilerplate](https://github.com/0xsequence-demos/web-sdk-embedded-wallet-react-router-7-cloudflare-boilerplate) instead!
+> Please check out [this boilerplate](https://github.com/0xsequence-demos/web-sdk-embedded-wallet-rr7-cloudflare-boilerplate) instead!
 
 
 
